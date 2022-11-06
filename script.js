@@ -10,8 +10,15 @@ class Token {
     }
 }
 
+//horizontal
 // const moveList = [new Token(0, 0, 1), new Token(1, 0, 1), new Token(2, 0, 1)];
-const moveList = [];
+
+// diagonal. winning move is 3 3 1 --> /
+// const moveList = [new Token(0, 0, 1), new Token(1, 0, 2), new Token(2, 0, 2), new Token(3, 0, 2), new Token(1, 1, 1), new Token(2, 1, 2), new Token(2, 2, 1), new Token(3, 1, 2), new Token(3, 2, 2)];
+
+// diagonal. winning move is 3 0 1 --> \
+const moveList = [new Token(0, 0, 2), new Token(0, 1, 2), new Token(0, 2, 2), new Token(0, 3, 1), new Token(1, 0, 3), new Token(1, 1, 3), new Token(1, 2, 1), new Token(2, 0, 4), new Token(2, 1, 1)];
+// const moveList = [];
 
 input.addEventListener("click", () => runMove(moveList));
 
@@ -129,9 +136,29 @@ function checkVertical(playerMoves) {
 }
 
 function checkDiagonal(playerMoves) {
+    const sortedColumnArray = playerMoves.sort(function(a, b) {
+        return a.column - b.column;
+      });
+
+      console.log(sortedColumnArray);
+
+      const response = recurseDiagonal(sortedColumnArray, 0, [])
+      console.log(response);
+
+      if (response != null ) {
+        return response
+      }
+
+      
+      const response2 = recurseDiagonal2(sortedColumnArray, 0, [])
+      console.log("response2");
+      console.log(response2);
+      
     
+      if (response2 != null) {
+        return response2
+      }
     
-    //todo
     // horizontal top L to bottom R --> \
     // add 1 to column remove 1 from row
 
@@ -145,7 +172,6 @@ function checkDiagonal(playerMoves) {
     // 4 2
     // 5 1
 
-    //todo
     // horizontal bottom L to top R --> /
     // add +1 to column and row
     
@@ -190,5 +216,62 @@ function recurse(playerMoves, field, indexValue, winList) {
         return recurse(playerMoves, field, (indexValue + 1), winList)
     } else {
         return recurse(playerMoves, field, (indexValue + 1), [])
+    }
+}
+
+
+//todo I can combine the recurse diagonal... maybe not the diagonal and the normal one, but I can check later.
+// left down right top --> /
+function recurseDiagonal(playerMoves, indexValue, winList) {
+    console.log("didja win");
+    console.log(winList);
+    if (winList.length === 4) {
+        return winList
+    }
+
+    // There is no nextToken
+    if (indexValue >= (playerMoves.length - 1)) {
+        return null
+    }
+    
+    const currToken = playerMoves[indexValue]
+    const nextToken = playerMoves[(indexValue + 1)]
+
+    // Check if this is a sequence of numbers. The current token should equal the next token if you add 1
+    if ((currToken['column'] + 1) === nextToken['column'] && (currToken['row'] + 1) === nextToken['row']) {
+        
+        if (winList.length == 0) { winList.push(currToken) }
+        winList.push(nextToken)
+
+        return recurseDiagonal(playerMoves, (indexValue + 1), winList)
+    } else {
+        return recurseDiagonal(playerMoves, (indexValue + 1), [])
+    }
+}
+
+// left top right bottom --> \ 
+function recurseDiagonal2(playerMoves, indexValue, winList) {
+    
+    if (winList.length === 4) {
+        return winList
+    }
+
+    // There is no nextToken
+    if (indexValue >= (playerMoves.length - 1)) {
+        return null
+    }
+    
+    const currToken = playerMoves[indexValue]
+    const nextToken = playerMoves[(indexValue + 1)]
+
+    // Check if this is a sequence of numbers. The current token should equal the next token if you add 1
+    if ((currToken['column'] + 1) === nextToken['column'] && (currToken['row'] - 1) === nextToken['row']) {
+        
+        if (winList.length == 0) { winList.push(currToken) }
+        winList.push(nextToken)
+
+        return recurseDiagonal2(playerMoves, (indexValue + 1), winList)
+    } else {
+        return recurseDiagonal2(playerMoves, (indexValue + 1), [])
     }
 }
