@@ -17,8 +17,8 @@ class Token {
 // const moveList = [new Token(0, 0, 1), new Token(1, 0, 2), new Token(2, 0, 2), new Token(3, 0, 2), new Token(1, 1, 1), new Token(2, 1, 2), new Token(2, 2, 1), new Token(3, 1, 2), new Token(3, 2, 2)];
 
 // diagonal. winning move is 3 0 1 --> \
-const moveList = [new Token(0, 0, 2), new Token(0, 1, 2), new Token(0, 2, 2), new Token(0, 3, 1), new Token(1, 0, 3), new Token(1, 1, 3), new Token(1, 2, 1), new Token(2, 0, 4), new Token(2, 1, 1)];
-// const moveList = [];
+// const moveList = [new Token(0, 0, 2), new Token(0, 1, 2), new Token(0, 2, 2), new Token(0, 3, 1), new Token(1, 0, 3), new Token(1, 1, 3), new Token(1, 2, 1), new Token(2, 0, 4), new Token(2, 1, 1)];
+const moveList = [];
 
 input.addEventListener("click", () => runMove(moveList));
 
